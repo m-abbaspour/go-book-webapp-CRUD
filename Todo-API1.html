@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+     <title>Document</title>
+</head>
+<body>
+<h1>TodoList</h1>
+<span class="add-task">
+  <input type='text' id='name' placeholder='New Task'>
+  <select id='todoType'>
+    <option>Home</option>
+    <option>Work</option>
+    <option>Hobby</option>
+    <option>Urgent</option>
+  </select>
+  <a id='add-btn' onclick="addtask()">Add Task</a>
+</span>
+
+<ul id='list'>
+</ul>
+</body>
+   <script>
+	  var num_id = 0;
+	  function refresh(){
+	    var e = document.getElementById("list");
+        var child = e.lastElementChild; 
+        while (child) {
+            e.removeChild(child);
+            child = e.lastElementChild;
+        }
+      axios.get("http://localhost:8085/api/book/getall")
+            .then(response => {
+                console.log(response);
+                for (let element of response.data) {
+                  num_id=element.ID;
+                  let del_button = document.createElement("button");
+                  del_button.innerHTML = "Delete";
+                  del_button.setAttribute('onclick', 'deletetask(' + num_id + ')');
+                  del_button.setAttribute('class', 'deletetask');
+
+                  //create edit button
+                  let edit_button = document.createElement("button");
+                  edit_button.innerHTML = "Edit";
+                  edit_button.setAttribute('onclick', 'edittask(' + num_id + ')');
+                  edit_button.setAttribute('class', 'edittask');
+                    var div_tag = document.createElement("span");
+                    var todo = element.Title;
+                    var text = document.createTextNode(todo);
+
+                    //create new list
+                    var list_tag = document.createElement("li");
+                    list_tag.setAttribute('id', num_id);
+                    //append
+                    div_tag.appendChild(text);
+                    list_tag.appendChild(div_tag);
+                    list_tag.appendChild(del_button);
+                    list_tag.appendChild(edit_button);
+                    var ulelement = document.getElementById("list");
+                    ulelement.appendChild(list_tag);
+                }} )
+            .
+                catch(error => console.error(error));
+		}
+		
+	refresh();
+
+    function addtask() {
+        if (document.getElementById('name').value != null && document.getElementById('name').value != '') {
+            var todo = document.getElementById('name').value;
+// send a POST request
+axios({
+  method: 'post',
+  url: 'http://localhost:8085/api/book/add',
+  data: {
+    Title: todo,
+    Author: todo,
+    Publication: todo,
+  }})
+  .then((response) => {
+ refresh();
+ console.log(response);
+}, (error) => {
+  console.log(error);
+});
+
+            document.getElementById('name').value = '';
+			
+
+
+        }
+    };
+
+    function deletetask(id) {
+        const element = document.getElementById(id);
+        alert('Delete');
+      axios.delete("http://localhost:8085/api/book/delete/"+id)
+              .then(response => {
+                console.log(response);
+				refresh();
+             } )
+              .
+              catch(error => console.error(error));
+    }
+
+    function edittask(id) {
+        alert('Edit');
+
+        const element = document.getElementById(id).firstChild.innerHTML;
+        let edit_task = prompt("Please enter the new value", element);
+        if (edit_task != null) { 
+
+			axios({
+			  method: 'PUT',
+			  url: 'http://localhost:8085/api/book/update/'+id,
+			  data: {
+				Title: edit_task,
+				Author: edit_task,
+				Publication: edit_task,
+			  }})
+			  .then((response) => {
+			  refresh();
+			  console.log(response);
+			}, (error) => {
+			  console.log(error);
+			});
+		}
+    }
+</script>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        background-color: #FEFBE9;
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5em;
+        text-align: center;
+    }
+
+    a {
+        text-decoration: solid underline rgb(27, 157, 103);
+        margin: 10px;
+        color: rgb(27, 157, 103);
+    }
+
+    a:hover {
+        color: black;
+        text-decoration: solid underline black;
+    }
+
+    .add-task {
+        display: flex;
+        justify-content: center;
+        padding: 20px;
+        background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23333' stroke-width='3' stroke-dasharray='15' stroke-dashoffset='2' stroke-linecap='round'/%3e%3c/svg%3e");
+        border-radius: 12px;
+        align-items: center;
+    }
+
+    ul {
+        padding: 10px;
+        list-style: circle inside;
+
+    }
+
+    .done {
+        text-decoration: line-through;
+    }
+
+    input {
+        margin: 10px;
+    }
+
+    #todoType {
+        height: 30px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #list span {
+        color: #6096B4;
+        margin: 10px 10px 10px 0;
+    }
+
+    button {
+        background-color: transparent;
+        margin: 10px 10px 10px 0;
+        height: 25px;
+        width: 100px;
+    }
+
+    #list li {
+        display: grid;
+        grid-template-columns: auto 110px 110px;
+        list-style: circle;
+    }
+
+    .deletetask {
+        border: groove 1.5px rgba(244, 75, 75, 0.906);
+        font-family: 'Poppins', sans-serif;
+        color: rgba(244, 75, 75, 0.906);
+
+    }
+
+    .edittask {
+        border: groove 1.5px rgb(75, 216, 244);
+        font-family: 'Poppins', sans-serif;
+        color: rgb(75, 216, 244);
+    }
+</style>
+</html>
+

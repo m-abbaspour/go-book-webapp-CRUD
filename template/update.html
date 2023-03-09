@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Form UI</title>
+    <link rel="stylesheet" href="./static/resources/index.css" />
+    <script src="https://kit.fontawesome.com/24b3577b6b.js" crossorigin="anonymous"></script>  
+</head>    
+  <body>
+    <nav class="navbar toppage">
+        <div class="brand-title">Brand Name</div>
+        <a href="#" class="toggle-button">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </a>
+        <div class="navbar-links">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+    <h1 class="h1">Edit</h1>
+    <div id="form-container">
+      <div id="div-bg"></div>
+      <div id="form-section">
+        <form method="POST" action="/doUpdate?bookId={{.Book.Model.ID}}">
+          <div class="form-group">
+
+            <label>Title</label>
+            <div class="form-field" id="Title">
+              <div>
+                <i class="fa-solid fa-book"></i>
+              </div>
+              <input
+                type="text"
+                name="Title"
+                value="{{.Book.Title}}"
+                onfocus="addBoxShadow('Title')"
+                onblur="removeBoxShadow('Title')"
+              />
+            </div>
+
+            <label>Author</label>
+            <div class="form-field" id="Author">
+              <div> 
+                <i class="fa-solid fa-user-tie"></i>
+              </div>
+              <input
+                type="text"
+                name="Author"
+                value="{{.Book.Author}}"
+                onfocus="addBoxShadow('Author')"
+                onblur="removeBoxShadow('Author')"
+              />
+            </div>
+
+            <label>Publication</label>
+            <div class="form-field" id="Publication">
+              <div>
+                <i class="fa-solid fa-building"></i>
+              </div>
+              <input 
+                type="text"
+                name="Publication"
+                value="{{.Book.Publication}}"
+                onfocus="addBoxShadow('Publication')"
+                onblur="removeBoxShadow('Publication')"
+              />
+            </div>
+          </div>
+          <button type="submit" id="submit-btn">Submit</button>
+        </form>
+        <div id="icon-container">
+          <div class="icons facebook">
+            <i class="fa fa-facebook"></i>
+          </div>
+          <div class="icons twitter">
+            <i class="fa fa-twitter"></i>
+          </div>
+          <div class="icons google">
+            <i class="fa fa-google"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="./static/resources/index.js"></script>
+  </body>
+</html>

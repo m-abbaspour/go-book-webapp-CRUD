@@ -1,0 +1,68 @@
+ <!DOCTYPE html>
+ <html lang="en" title="Coding design">
+ 
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+     <title>Responsive HTML Table With Pure CSS - Web Design/UI Design</title>
+     <link rel="stylesheet" href="./static/resources/index.css">
+     <script src="./static/resources/index.js"></script>
+ </head>
+ 
+ <body>
+    <nav class="navbar toppage">
+        <div class="brand-title">Brand Name</div>
+        <a href="#" class="toggle-button">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </a>
+        <div class="navbar-links">
+          <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </nav>
+     <main class="table table-margin-top">
+         <section class="table__header">
+             <h1>Book List</h1>
+             <div style="color: red;"> {{ .Msg }}</div>
+            <div>{{.Message}}</div>
+            <a href="/new">Add a book</a>
+             <div class="input-group">
+                 <input type="search" placeholder="Search Data...">
+             </div>
+             
+         </section>
+         <section class="table__body">
+             <table>
+                 <thead>
+                     <tr>
+                         <th> Title <span class="icon-arrow">&UpArrow;</span></th>
+                         <th> Author <span class="icon-arrow">&UpArrow;</span></th>
+                         <th> Publication <span class="icon-arrow">&UpArrow;</span></th>
+                         <th> Edit <span class="icon-arrow">&UpArrow;</span></th>
+                         <th> Delete <span class="icon-arrow">&UpArrow;</span></th>
+                     </tr>
+                 </thead>
+                 <tbody>
+                    {{range .Books}}
+                    <tr>
+                        <td>{{ .Title }}</td>
+                        <td>{{ .Author }}</td>
+                        <td>{{ .Publication }}</td>
+                        <td><button class="btn btn2"><a href="/edit?bookId={{.Model.ID}}">Edit</a></button></td>
+                        <td> <button class="btn btn1" onclick="Delete('{{.Model.ID}}');"> Delete </button> </td>
+                    </tr>
+                    {{end}}
+                 </tbody>
+             </table>
+         </section>
+     </main>
+ </body>
+ 
+ </html>
+
