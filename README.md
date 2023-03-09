@@ -8,4 +8,10 @@ Basic CRUD functionality
 
 Includes REST API & webapp
 
-Developed with Go and MySQL
+The code to create this webapp is included in the `code.txt` file
+
+-----
+To run:
+```
+go run webapp.go
+```
