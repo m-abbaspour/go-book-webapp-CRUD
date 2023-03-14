@@ -25,6 +25,25 @@ func welcomeHandler(w http.ResponseWriter,
 	error = templ.Execute(w, nil)
 }
 
+func aboutHandler(w http.ResponseWriter, 
+	r *http.Request) {
+	templ, error := template.ParseFiles("template/about.html")
+	if error != nil {
+		log.Fatal()
+	}
+
+	error = templ.Execute(w, nil)
+}
+
+func contactHandler(w http.ResponseWriter, 
+	r *http.Request) {
+	templ, error := template.ParseFiles("template/contact.html")
+	if error != nil {
+		log.Fatal()
+	}
+	error = templ.Execute(w, nil)
+}
+
 func interactHandler(w http.ResponseWriter, 
 	r *http.Request) {
 	type context struct {
@@ -209,14 +228,17 @@ func apiBookUpdate(w http.ResponseWriter,
 }
 
 func main() {
+	
 	router := mux.NewRouter()
 	http.Handle("/", router)
 	fileServer:= http.FileServer(http.Dir("./static"))
 	router.PathPrefix("/static").Handler(http.StripPrefix("/static/resources", fileServer))
 
 	router.HandleFunc("/", welcomeHandler)
-
+	router.HandleFunc("/about", aboutHandler)
+	router.HandleFunc("/contact", contactHandler)
 	router.HandleFunc("/interact", interactHandler)
+
 	router.HandleFunc("/new", newHandler)
 	router.HandleFunc("/create", createHandler)
 	router.HandleFunc("/delete", deleteHandler)
