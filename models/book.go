@@ -17,7 +17,7 @@ type Book struct { // 6
 var db *gorm.DB // 2
 
 func init() { // 4
-	d, err := gorm.Open("mysql", "user:pass@/book?charset=utf8&parseTime=True&loc=Local")
+	d, err := gorm.Open("mysql", "abbas:abbas@/book?charset=utf8&parseTime=True&loc=Local")
 	if err != nil {
 		panic(err)
 	}
